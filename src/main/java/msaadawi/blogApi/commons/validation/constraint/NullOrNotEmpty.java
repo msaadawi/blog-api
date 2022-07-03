@@ -1,0 +1,30 @@
+package msaadawi.blogApi.commons.validation.constraint;
+
+import org.hibernate.validator.constraints.ConstraintComposition;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import javax.validation.ReportAsSingleViolation;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Null;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import static org.hibernate.validator.constraints.CompositionType.OR;
+
+@ConstraintComposition(OR)
+@Null
+@NotEmpty
+@ReportAsSingleViolation
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+@Retention(RUNTIME)
+@Constraint(validatedBy = {})
+public @interface NullOrNotEmpty {
+    String message() default "{javax.validation.constraints.NullOrNotEmpty.message}";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+}

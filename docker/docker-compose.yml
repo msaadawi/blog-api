@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  blog-api:
+    image: msaadawi/blog-api:latest
+    hostname: blog-api
+    container_name: blog_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - blog-api-db
+    restart: on-failure
+  blog-api-db:
+    image: postgres
+    hostname: blog-api-db
+    container_name: blog_api_db
+    volumes:
+      - ./volumes/blog-api-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${BLOG_API_DB_USERNAME}
+      - POSTGRES_PASSWORD=${BLOG_API_DB_PASSWORD}
+      - POSTGRES_DB=${BLOG_API_DATABASE_NAME}
+    ports:
+      - "5432"
+  authz-server:
+    image: quay.io/keycloak/keycloak:latest
+    hostname: blog-api-authz-server
+    container_name: blog_api_authz_server
+    environment:
+      - KEYCLOAK_ADMIN=${AUTHZ_SERVER_USERNAME}
+      - KEYCLOAK_ADMIN_PASSWORD=${AUTHZ_SERVER_PASSWORD}
+      - KC_DB=postgres
+      - KC_DB_URL=${AUTHZ_SERVER_DB_URL}
+      - KC_DB_USERNAME=${AUTHZ_SERVER_DB_USERNAME}
+      - KC_DB_PASSWORD=${AUTHZ_SERVER_DB_PASSWORD}
+    ports:
+      - "8081:8080"
+    depends_on:
+      - authz-server-db
+    restart: on-failure
+    command: [ "start-dev" ]
+  authz-server-db:
+    image: postgres
+    hostname: blog-api-authz-server-db
+    container_name: blog_api_authz_server_db
+    volumes:
+      - ./volumes/authz-server-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${AUTHZ_SERVER_DB_USERNAME}
+      - POSTGRES_PASSWORD=${AUTHZ_SERVER_DB_PASSWORD}
+      - POSTGRES_DB=${AUTHZ_SERVER_DATABASE_NAME}
+    ports:
+      - "5432"

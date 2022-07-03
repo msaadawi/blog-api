@@ -1,0 +1,63 @@
+package msaadawi.blogApi.domain.user.web.controller;
+
+import msaadawi.blogApi.commons.exception.EntityNotFoundException;
+import msaadawi.blogApi.commons.resolver.PagingConfigResolver;
+import msaadawi.blogApi.commons.resolver.SortingConfigsResolver;
+import msaadawi.blogApi.commons.validation.validator.PagingConfigValidator;
+import msaadawi.blogApi.commons.validation.validator.SortingConfigsValidator;
+import msaadawi.blogApi.domain.user.converter.DtoToUserConverter;
+import msaadawi.blogApi.domain.user.converter.UserToDtoConverter;
+import msaadawi.blogApi.domain.user.service.UserPersistenceService;
+import msaadawi.blogApi.domain.user.validator.UserRequestPayloadValidator;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+@WebMvcTest(controllers = UserController.class)
+class UserControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserPersistenceService userPersistenceService;
+
+    @MockBean
+    private UserToDtoConverter userToDtoConverter;
+
+    @MockBean
+    private DtoToUserConverter dtoToUserConverter;
+
+    @MockBean
+    private UserRequestPayloadValidator reqPayloadValidator;
+
+    @MockBean
+    private PagingConfigResolver pagingConfigResolver;
+
+    @MockBean
+    private PagingConfigValidator pagingConfigValidator;
+
+    @MockBean
+    private SortingConfigsResolver sortingConfigsResolver;
+
+    @MockBean
+    private SortingConfigsValidator sortingConfigsValidator;
+
+    @Test
+    void should_Return404NotFound_For_GetUser_When_UserDoesNotExist() throws Exception {
+        // given
+        long id = 0L;
+        given(userPersistenceService.getById(id)).willThrow(EntityNotFoundException.class);
+        int expected = 404;
+        // when
+        int actual = mockMvc.perform(get("/api/users/{id}", id)).andReturn().getResponse().getStatus();
+        // then
+        assertEquals(expected, actual);
+    }
+}
