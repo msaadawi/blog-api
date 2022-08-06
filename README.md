@@ -1,3 +1,5 @@
+# Blog API
+
 ## Usage:
 1. git clone https://github.com/msaadawi/blog-api.git
 2. cd blog-api
