@@ -5,5 +5,5 @@
 2. cd blog-api
 3. ./gradlew build
 4. cd docker
-5. bash build-images.sh
+5. sh build-images.sh
 6. docker-compose up
