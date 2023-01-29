@@ -2,21 +2,20 @@ package msaadawi.blogApi.domain.post.web.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import msaadawi.blogApi.commons.config.paging.PagingConfiguration;
-import msaadawi.blogApi.commons.config.sorting.SortingConfiguration;
-import msaadawi.blogApi.commons.controller.BaseController;
-import msaadawi.blogApi.commons.resolver.PagingConfigResolver;
-import msaadawi.blogApi.commons.resolver.SortingConfigsResolver;
-import msaadawi.blogApi.commons.util.PageResult;
-import msaadawi.blogApi.commons.validation.validator.PagingConfigValidator;
-import msaadawi.blogApi.commons.validation.validator.SortingConfigsValidator;
+import msaadawi.blogApi.common.util.PageResult;
+import msaadawi.blogApi.common.validation.validator.PagingSettingsValidator;
+import msaadawi.blogApi.common.validation.validator.SortingSettingsValidator;
+import msaadawi.blogApi.common.web.paging.PagingSettings;
+import msaadawi.blogApi.common.web.paging.PagingSettingsResolver;
+import msaadawi.blogApi.common.web.sorting.SortingSettings;
+import msaadawi.blogApi.common.web.sorting.SortingSettingsResolver;
 import msaadawi.blogApi.domain.post.converter.DtoToPostConverter;
 import msaadawi.blogApi.domain.post.converter.PostToDtoConverter;
-import msaadawi.blogApi.domain.post.validation.validator.PostRequestPayloadValidator;
-import msaadawi.blogApi.domain.post.web.payload.ResponsePostDto;
-import msaadawi.blogApi.domain.post.web.payload.impl.DefaultRequestPostDto;
 import msaadawi.blogApi.domain.post.model.PostModel;
 import msaadawi.blogApi.domain.post.service.PostPersistenceService;
+import msaadawi.blogApi.domain.post.validation.validator.PostRequestPayloadValidator;
+import msaadawi.blogApi.domain.post.web.payload.RequestPostDto;
+import msaadawi.blogApi.domain.post.web.payload.ResponsePostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +26,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController implements BaseController {
+public class PostController {
 
     private final PostPersistenceService postPersistenceService;
 
@@ -37,13 +36,13 @@ public class PostController implements BaseController {
 
     private final PostRequestPayloadValidator reqPayloadValidator;
 
-    private final PagingConfigResolver pagingConfigResolver;
+    private final PagingSettingsResolver pagingSettingsResolver;
 
-    private final PagingConfigValidator pagingConfigValidator;
+    private final PagingSettingsValidator pagingSettingsValidator;
 
-    private final SortingConfigsResolver sortingConfigsResolver;
+    private final SortingSettingsResolver sortingSettingsResolver;
 
-    private final SortingConfigsValidator sortingConfigsValidator;
+    private final SortingSettingsValidator sortingSettingsValidator;
 
 
     @GetMapping("/{id}")
@@ -53,15 +52,15 @@ public class PostController implements BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody DefaultRequestPostDto reqPostDto) {
-        reqPayloadValidator.validatePayloadForSingleCreate(reqPostDto);
+    public ResponseEntity<Void> createPost(@RequestBody RequestPostDto reqPostDto) {
+        reqPayloadValidator.validatePayloadForSingleCreateOp(reqPostDto);
         postPersistenceService.create(dtoToPostConverter.toPost(reqPostDto));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(@RequestBody DefaultRequestPostDto reqPostDto, @PathVariable("id") long id) {
-        reqPayloadValidator.validatePayloadForSingleUpdate(reqPostDto);
+    public ResponseEntity<Void> updatePost(@RequestBody RequestPostDto reqPostDto, @PathVariable("id") long id) {
+        reqPayloadValidator.validatePayloadForSingleUpdateOp(reqPostDto);
         reqPostDto.setId(id);
         PostModel updatablePost = dtoToPostConverter.toUpdatablePost(reqPostDto);
         postPersistenceService.update(updatablePost);
@@ -79,17 +78,17 @@ public class PostController implements BaseController {
             @RequestParam(name = "pageNumber", required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", required = false) Integer pageSize,
             @RequestParam(name = "sort", required = false) String[] sort) {
-        PagingConfiguration pagingConfig = pagingConfigResolver.doResolve(pageNumber, pageSize);
-        pagingConfigValidator.doValidate(pagingConfig);
-        List<SortingConfiguration> sortingConfigs = sortingConfigsResolver.doResolve(sort);
-        sortingConfigsValidator.doValidate(sortingConfigs);
-        PageResult<PostModel> postPageResult = postPersistenceService.fetchPage(pagingConfig, sortingConfigs);
+        PagingSettings pagingSettings = pagingSettingsResolver.doResolve(pageNumber, pageSize);
+        pagingSettingsValidator.doValidate(pagingSettings);
+        List<SortingSettings> sortingSettingsList = sortingSettingsResolver.doResolve(sort);
+        sortingSettingsValidator.doValidate(sortingSettingsList);
+        PageResult<PostModel> postPageResult = postPersistenceService.fetchPage(pagingSettings, sortingSettingsList);
         return new ResponseEntity<>(postToDtoConverter.toPostDtoPageResult(postPageResult), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Void> updatePosts(@RequestBody List<DefaultRequestPostDto> reqPostDtos) {
-        reqPayloadValidator.validatePayloadForBulkUpdate(reqPostDtos);
+    public ResponseEntity<Void> updatePosts(@RequestBody List<RequestPostDto> reqPostDtos) {
+        reqPayloadValidator.validatePayloadForBulkUpdateOp(reqPostDtos);
         List<PostModel> updatablePosts = dtoToPostConverter.toUpdatablePostList(reqPostDtos);
         postPersistenceService.update(updatablePosts);
         return ResponseEntity.ok().build();

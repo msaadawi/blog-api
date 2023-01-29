@@ -5,9 +5,9 @@ import msaadawi.blogApi.domain.comment.validation.group.OnReferencedByComment;
 import msaadawi.blogApi.domain.comment.validation.validator.CommentRequestPayloadValidator;
 import msaadawi.blogApi.domain.comment.web.payload.CommentDto;
 import msaadawi.blogApi.domain.comment.web.payload.RequestCommentDto;
-import msaadawi.blogApi.commons.validation.group.OnBulkUpdate;
-import msaadawi.blogApi.commons.validation.group.OnSingleInsert;
-import msaadawi.blogApi.commons.validation.group.OnSingleUpdate;
+import msaadawi.blogApi.common.validation.group.OnBulkUpdate;
+import msaadawi.blogApi.common.validation.group.OnSingleInsert;
+import msaadawi.blogApi.common.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.user.web.payload.UserDto;
 import msaadawi.blogApi.domain.post.web.payload.PostDto;
 import org.springframework.stereotype.Component;
@@ -25,11 +25,11 @@ public class DefaultCommentRequestPayloadValidator implements CommentRequestPayl
     private final Validator validator;
 
     @Override
-    public void validatePayloadForSingleCreate(RequestCommentDto reqCommentDto) {
+    public void validatePayloadForSingleCreateOp(RequestCommentDto reqCommentDto) {
         Set<ConstraintViolation<CommentDto>> commentViolations = validator.validate(reqCommentDto, OnSingleInsert.class);
         if (!commentViolations.isEmpty()) throw new ConstraintViolationException(commentViolations);
 
-        Set<ConstraintViolation<PostDto>> postAddedToViolations = validator.validate(reqCommentDto.getPostAddedTo(),
+        Set<ConstraintViolation<PostDto>> postAddedToViolations = validator.validate(reqCommentDto.getPost(),
                 OnReferencedByComment.class);
         if (!postAddedToViolations.isEmpty()) throw new ConstraintViolationException(postAddedToViolations);
 
@@ -39,13 +39,13 @@ public class DefaultCommentRequestPayloadValidator implements CommentRequestPayl
     }
 
     @Override
-    public void validatePayloadForSingleUpdate(RequestCommentDto reqCommentDto) {
+    public void validatePayloadForSingleUpdateOp(RequestCommentDto reqCommentDto) {
         Set<ConstraintViolation<CommentDto>> commentViolations = validator.validate(reqCommentDto, OnSingleUpdate.class);
         if (!commentViolations.isEmpty()) throw new ConstraintViolationException(commentViolations);
     }
 
     @Override
-    public void validatePayloadForBulkUpdate(List<? extends RequestCommentDto> reqCommentDtos) {
+    public void validatePayloadForBulkUpdateOp(List<? extends RequestCommentDto> reqCommentDtos) {
         for (CommentDto commentDto : reqCommentDtos) {
             Set<ConstraintViolation<CommentDto>> violations = validator.validate(commentDto,
                     OnBulkUpdate.class);

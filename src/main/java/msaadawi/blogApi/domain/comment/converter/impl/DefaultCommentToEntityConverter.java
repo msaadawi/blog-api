@@ -23,7 +23,7 @@ public class DefaultCommentToEntityConverter implements CommentToEntityConverter
                 .content(source.getContent())
                 .createdAt(source.getCreatedAt())
                 .lastUpdatedAt(source.getLastUpdatedAt())
-                .postAddedTo(postToEntityConverter.toPostEntity(source.getPostAddedTo()))
+                .post(postToEntityConverter.toPostEntity(source.getPost()))
                 .owner(userToEntityConverter.toUserEntity(source.getOwner()))
                 .build();
     }

@@ -1,10 +1,8 @@
 package msaadawi.blogApi.domain.user.model;
 
-import msaadawi.blogApi.commons.model.BaseModel;
-
 import java.util.Date;
 
-public interface UserModel extends BaseModel {
+public interface UserModel {
 
     Long getId();
 

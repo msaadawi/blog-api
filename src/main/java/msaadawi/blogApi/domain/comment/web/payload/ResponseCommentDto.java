@@ -1,6 +1,6 @@
 package msaadawi.blogApi.domain.comment.web.payload;
 
-import msaadawi.blogApi.commons.exception.NoSuchPropertyException;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
 import msaadawi.blogApi.domain.post.web.payload.ResponsePostDto;
 import msaadawi.blogApi.domain.user.web.payload.ResponseUserDto;
 
@@ -16,9 +16,9 @@ public interface ResponseCommentDto extends CommentDto {
 
     void setLastUpdatedAt(Date lastUpdatedAt) throws NoSuchPropertyException;
 
-    ResponsePostDto getPostAddedTo() throws NoSuchPropertyException;
+    ResponsePostDto getPost() throws NoSuchPropertyException;
 
-    void setPostAddedTo(ResponsePostDto post) throws NoSuchPropertyException;
+    void setPost(ResponsePostDto post) throws NoSuchPropertyException;
 
     ResponseUserDto getOwner() throws NoSuchPropertyException;
 

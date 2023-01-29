@@ -1,8 +1,8 @@
 package msaadawi.blogApi.domain.user.service.impl;
 
-import msaadawi.blogApi.commons.config.paging.PagingConfigurer;
-import msaadawi.blogApi.commons.config.sorting.SortingConfigurer;
-import msaadawi.blogApi.commons.exception.EntityNotFoundException;
+import msaadawi.blogApi.common.web.paging.PagingConfigurer;
+import msaadawi.blogApi.common.web.sorting.SortingConfigurer;
+import msaadawi.blogApi.common.exception.EntityNotFoundException;
 import msaadawi.blogApi.domain.user.converter.EntityToUserConverter;
 import msaadawi.blogApi.domain.user.converter.UserToEntityConverter;
 import msaadawi.blogApi.domain.user.data.entity.UserEntity;

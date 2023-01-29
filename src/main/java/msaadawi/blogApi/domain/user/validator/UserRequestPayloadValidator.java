@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface UserRequestPayloadValidator {
 
-    default void validatePayloadForSingleCreate(RequestUserDto reqUserDto) throws UnsupportedOperationException {
+    default void validatePayloadForSingleCreateOp(RequestUserDto reqUserDto) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Unsupported validation type.");
     }
 
-    default void validatePayloadForSingleUpdate(RequestUserDto reqUserDto) throws UnsupportedOperationException {
+    default void validatePayloadForSingleUpdateOp(RequestUserDto reqUserDto) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Unsupported validation type.");
     }
 
-    default void validatePayloadForBulkUpdate(List<? extends RequestUserDto> reqUserDtos)
+    default void validatePayloadForBulkUpdateOp(List<? extends RequestUserDto> reqUserDtos)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Unsupported validation type.");
     }

@@ -22,7 +22,7 @@ public class DefaultCommentModel implements CommentModel {
 
     private Date lastUpdatedAt;
 
-    private PostModel postAddedTo;
+    private PostModel post;
 
     private UserModel owner;
 }

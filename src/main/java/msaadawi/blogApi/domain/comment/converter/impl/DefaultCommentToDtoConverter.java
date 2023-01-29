@@ -25,7 +25,7 @@ public class DefaultCommentToDtoConverter implements CommentToDtoConverter {
                 .content(source.getContent())
                 .createdAt(source.getCreatedAt())
                 .lastUpdatedAt(source.getLastUpdatedAt())
-                .postAddedTo(postToDtoConverter.toPostDto(source.getPostAddedTo()))
+                .post(postToDtoConverter.toPostDto(source.getPost()))
                 .owner(userToDtoConverter.toUserDto(source.getOwner()))
                 .build();
     }

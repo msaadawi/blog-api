@@ -1,6 +1,6 @@
 package msaadawi.blogApi.domain.user.converter;
 
-import msaadawi.blogApi.commons.util.PageResult;
+import msaadawi.blogApi.common.util.PageResult;
 import msaadawi.blogApi.domain.user.model.UserModel;
 import msaadawi.blogApi.domain.user.web.payload.ResponseUserDto;
 

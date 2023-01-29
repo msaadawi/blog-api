@@ -1,7 +1,7 @@
 package msaadawi.blogApi.domain.post.data.entity;
 
 import lombok.*;
-import msaadawi.blogApi.commons.entity.BaseEntity;
+import msaadawi.blogApi.common.entity.BaseEntity;
 import msaadawi.blogApi.domain.user.data.entity.UserEntity;
 
 import javax.persistence.*;

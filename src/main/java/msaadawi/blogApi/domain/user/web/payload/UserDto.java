@@ -1,7 +1,7 @@
 package msaadawi.blogApi.domain.user.web.payload;
 
-import msaadawi.blogApi.commons.exception.NoSuchPropertyException;
-import msaadawi.blogApi.commons.payload.BaseDto;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
+import msaadawi.blogApi.common.payload.BaseDto;
 
 import java.util.Date;
 

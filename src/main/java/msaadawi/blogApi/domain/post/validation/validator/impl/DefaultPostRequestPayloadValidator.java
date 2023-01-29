@@ -1,9 +1,9 @@
 package msaadawi.blogApi.domain.post.validation.validator.impl;
 
 import lombok.RequiredArgsConstructor;
-import msaadawi.blogApi.commons.validation.group.OnBulkUpdate;
-import msaadawi.blogApi.commons.validation.group.OnSingleInsert;
-import msaadawi.blogApi.commons.validation.group.OnSingleUpdate;
+import msaadawi.blogApi.common.validation.group.OnBulkUpdate;
+import msaadawi.blogApi.common.validation.group.OnSingleInsert;
+import msaadawi.blogApi.common.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.post.validation.validator.PostRequestPayloadValidator;
 import msaadawi.blogApi.domain.user.web.payload.UserDto;
 import msaadawi.blogApi.domain.post.validation.group.OnReferencedByPost;
@@ -24,7 +24,7 @@ public class DefaultPostRequestPayloadValidator implements PostRequestPayloadVal
     private final Validator validator;
 
     @Override
-    public void validatePayloadForSingleCreate(RequestPostDto reqPostDto) {
+    public void validatePayloadForSingleCreateOp(RequestPostDto reqPostDto) {
         Set<ConstraintViolation<PostDto>> postViolations = validator.validate(reqPostDto, OnSingleInsert.class);
         if (!postViolations.isEmpty()) throw new ConstraintViolationException(postViolations);
 
@@ -34,13 +34,13 @@ public class DefaultPostRequestPayloadValidator implements PostRequestPayloadVal
     }
 
     @Override
-    public void validatePayloadForSingleUpdate(RequestPostDto reqPostDto) {
+    public void validatePayloadForSingleUpdateOp(RequestPostDto reqPostDto) {
         Set<ConstraintViolation<PostDto>> postViolations = validator.validate(reqPostDto, OnSingleUpdate.class);
         if (!postViolations.isEmpty()) throw new ConstraintViolationException(postViolations);
     }
 
     @Override
-    public void validatePayloadForBulkUpdate(List<? extends RequestPostDto> requestPostDtos) {
+    public void validatePayloadForBulkUpdateOp(List<? extends RequestPostDto> requestPostDtos) {
         for (PostDto reqPostDto : requestPostDtos) {
             Set<ConstraintViolation<PostDto>> violations = validator.validate(reqPostDto,
                     OnBulkUpdate.class);

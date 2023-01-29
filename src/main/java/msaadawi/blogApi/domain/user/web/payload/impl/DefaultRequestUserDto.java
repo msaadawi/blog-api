@@ -6,12 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import msaadawi.blogApi.domain.comment.validation.group.OnReferencedByComment;
-import msaadawi.blogApi.commons.error.ValidatedBean;
-import msaadawi.blogApi.commons.exception.NoSuchPropertyException;
-import msaadawi.blogApi.commons.validation.constraint.NullOrNotBlank;
-import msaadawi.blogApi.commons.validation.group.OnBulkUpdate;
-import msaadawi.blogApi.commons.validation.group.OnSingleInsert;
-import msaadawi.blogApi.commons.validation.group.OnSingleUpdate;
+import msaadawi.blogApi.common.validation.Validatable;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
+import msaadawi.blogApi.common.validation.constraint.NullOrNotBlank;
+import msaadawi.blogApi.common.validation.group.OnBulkUpdate;
+import msaadawi.blogApi.common.validation.group.OnSingleInsert;
+import msaadawi.blogApi.common.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.post.validation.group.OnReferencedByPost;
 import msaadawi.blogApi.domain.user.web.payload.RequestUserDto;
 
@@ -26,9 +26,10 @@ import java.util.Optional;
 @Builder
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE)
+        setterVisibility = JsonAutoDetect.Visibility.NONE,
+        creatorVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
+public class DefaultRequestUserDto implements RequestUserDto, Validatable {
 
     @Null(message = "{validation.user.id.on-single-insert-or-update.if-present}",
             groups = {OnSingleInsert.class, OnSingleUpdate.class})
@@ -127,12 +128,13 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
         return id.orElse(0L);
     }
 
+    @Override
     public void setId(Long id) throws NoSuchPropertyException {
         this.id = Optional.ofNullable(id);
     }
 
     @Override
-    public boolean containsId() {
+    public boolean containsId() throws NoSuchPropertyException {
         return id != null;
     }
 
@@ -143,7 +145,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsUsername() {
+    public void setUsername(String username) throws NoSuchPropertyException {
+        this.username = Optional.ofNullable(username);
+    }
+
+    @Override
+    public boolean containsUsername() throws NoSuchPropertyException {
         return username != null;
     }
 
@@ -154,7 +161,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsEmail() {
+    public void setEmail(String email) throws NoSuchPropertyException {
+        this.email = Optional.ofNullable(email);
+    }
+
+    @Override
+    public boolean containsEmail() throws NoSuchPropertyException {
         return email != null;
     }
 
@@ -165,7 +177,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsPhone() {
+    public void setPhone(String phone) throws NoSuchPropertyException {
+        this.phone = Optional.ofNullable(phone);
+    }
+
+    @Override
+    public boolean containsPhone() throws NoSuchPropertyException {
         return phone != null;
     }
 
@@ -176,7 +193,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsFirstName() {
+    public void setFirstName(String firstName) throws NoSuchPropertyException {
+        this.firstName = Optional.ofNullable(firstName);
+    }
+
+    @Override
+    public boolean containsFirstName() throws NoSuchPropertyException {
         return firstName != null;
     }
 
@@ -187,7 +209,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsLastName() {
+    public void setLastName(String lastName) throws NoSuchPropertyException {
+        this.lastName = Optional.ofNullable(lastName);
+    }
+
+    @Override
+    public boolean containsLastName() throws NoSuchPropertyException {
         return lastName != null;
     }
 
@@ -198,7 +225,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsBirthDate() {
+    public void setBirthDate(Date birthDate) throws NoSuchPropertyException {
+        this.birthDate = Optional.ofNullable(birthDate);
+    }
+
+    @Override
+    public boolean containsBirthDate() throws NoSuchPropertyException {
         return birthDate != null;
     }
 
@@ -209,7 +241,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsProfession() {
+    public void setProfession(String profession) throws NoSuchPropertyException {
+        this.profession = Optional.ofNullable(profession);
+    }
+
+    @Override
+    public boolean containsProfession() throws NoSuchPropertyException {
         return profession != null;
     }
 
@@ -220,7 +257,12 @@ public class DefaultRequestUserDto implements RequestUserDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsCurrentLocation() {
+    public void setCurrentLocation(String currentLocation) throws NoSuchPropertyException {
+        this.currentLocation = Optional.ofNullable(currentLocation);
+    }
+
+    @Override
+    public boolean containsCurrentLocation() throws NoSuchPropertyException {
         return currentLocation != null;
     }
 

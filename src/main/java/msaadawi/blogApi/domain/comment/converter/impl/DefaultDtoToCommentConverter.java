@@ -31,7 +31,7 @@ public class DefaultDtoToCommentConverter implements DtoToCommentConverter {
                 .content(source.getContent())
                 .createdAt(source.getCreatedAt())
                 .lastUpdatedAt(source.getLastUpdatedAt())
-                .postAddedTo(dtoToPostConverter.toPost(source.getPostAddedTo()))
+                .post(dtoToPostConverter.toPost(source.getPost()))
                 .owner(dtoToUserConverter.toUser(source.getOwner()))
                 .build();
     }
@@ -77,7 +77,7 @@ public class DefaultDtoToCommentConverter implements DtoToCommentConverter {
     }
 
     private void handlePost(RequestCommentDto reqCommentDto, CommentModel transientComment, CommentModel persistedComment) {
-        transientComment.setPostAddedTo(persistedComment.getPostAddedTo());
+        transientComment.setPost(persistedComment.getPost());
     }
 
     private void handleOwner(RequestCommentDto reqCommentDto, CommentModel transientComment, CommentModel persistedComment) {

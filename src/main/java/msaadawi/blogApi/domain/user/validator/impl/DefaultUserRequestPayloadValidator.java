@@ -1,9 +1,9 @@
 package msaadawi.blogApi.domain.user.validator.impl;
 
 import lombok.RequiredArgsConstructor;
-import msaadawi.blogApi.commons.validation.group.OnBulkUpdate;
-import msaadawi.blogApi.commons.validation.group.OnSingleInsert;
-import msaadawi.blogApi.commons.validation.group.OnSingleUpdate;
+import msaadawi.blogApi.common.validation.group.OnBulkUpdate;
+import msaadawi.blogApi.common.validation.group.OnSingleInsert;
+import msaadawi.blogApi.common.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.user.validator.UserRequestPayloadValidator;
 import msaadawi.blogApi.domain.user.web.payload.RequestUserDto;
 import msaadawi.blogApi.domain.user.web.payload.UserDto;
@@ -22,19 +22,19 @@ public class DefaultUserRequestPayloadValidator implements UserRequestPayloadVal
     private final Validator validator;
 
     @Override
-    public void validatePayloadForSingleCreate(RequestUserDto reqUserDto) {
+    public void validatePayloadForSingleCreateOp(RequestUserDto reqUserDto) {
         Set<ConstraintViolation<UserDto>> violations = validator.validate(reqUserDto, OnSingleInsert.class);
         if (!violations.isEmpty()) throw new ConstraintViolationException(violations);
     }
 
     @Override
-    public void validatePayloadForSingleUpdate(RequestUserDto reqUserDto) {
+    public void validatePayloadForSingleUpdateOp(RequestUserDto reqUserDto) {
         Set<ConstraintViolation<UserDto>> violations = validator.validate(reqUserDto, OnSingleUpdate.class);
         if (!violations.isEmpty()) throw new ConstraintViolationException(violations);
     }
 
     @Override
-    public void validatePayloadForBulkUpdate(List<? extends RequestUserDto> reqUserDtos) {
+    public void validatePayloadForBulkUpdateOp(List<? extends RequestUserDto> reqUserDtos) {
         for (UserDto reqUserDto : reqUserDtos) {
             Set<ConstraintViolation<UserDto>> violations = validator.validate(reqUserDto,
                     OnBulkUpdate.class);

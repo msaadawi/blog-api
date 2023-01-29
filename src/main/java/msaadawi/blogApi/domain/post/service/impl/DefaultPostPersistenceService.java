@@ -1,12 +1,12 @@
 package msaadawi.blogApi.domain.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import msaadawi.blogApi.commons.config.paging.PagingConfiguration;
-import msaadawi.blogApi.commons.config.paging.PagingConfigurer;
-import msaadawi.blogApi.commons.config.sorting.SortingConfiguration;
-import msaadawi.blogApi.commons.config.sorting.SortingConfigurer;
-import msaadawi.blogApi.commons.exception.EntityNotFoundException;
-import msaadawi.blogApi.commons.util.PageResult;
+import msaadawi.blogApi.common.web.paging.PagingSettings;
+import msaadawi.blogApi.common.web.paging.PagingConfigurer;
+import msaadawi.blogApi.common.web.sorting.SortingSettings;
+import msaadawi.blogApi.common.web.sorting.SortingConfigurer;
+import msaadawi.blogApi.common.exception.EntityNotFoundException;
+import msaadawi.blogApi.common.util.PageResult;
 import msaadawi.blogApi.domain.post.converter.EntityToPostConverter;
 import msaadawi.blogApi.domain.post.converter.PostToEntityConverter;
 import msaadawi.blogApi.domain.post.data.repository.PostRepository;
@@ -104,11 +104,11 @@ public class DefaultPostPersistenceService implements PostPersistenceService {
     }
 
     @Override
-    public PageResult<PostModel> fetchPage(PagingConfiguration pagingConfig, List<? extends SortingConfiguration> sortingConfigs) {
+    public PageResult<PostModel> fetchPage(PagingSettings pagingSettings, List<? extends SortingSettings> sortingSettingsList) {
         Pageable pageable = PageRequest.of(
-                pagingConfigurer.configurePageNumber(pagingConfig),
-                pagingConfigurer.configurePageSize(pagingConfig),
-                sortingConfigurer.doConfigure(sortingConfigs)
+                pagingConfigurer.configurePageNumber(pagingSettings),
+                pagingConfigurer.configurePageSize(pagingSettings),
+                sortingConfigurer.doConfigure(sortingSettingsList)
         );
 
         org.springframework.data.domain.Page<PostEntity> page = postRepository.findAll(pageable);

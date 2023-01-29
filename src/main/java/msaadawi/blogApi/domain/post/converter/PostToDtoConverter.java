@@ -1,6 +1,6 @@
 package msaadawi.blogApi.domain.post.converter;
 
-import msaadawi.blogApi.commons.util.PageResult;
+import msaadawi.blogApi.common.util.PageResult;
 import msaadawi.blogApi.domain.post.web.payload.ResponsePostDto;
 import msaadawi.blogApi.domain.post.model.PostModel;
 

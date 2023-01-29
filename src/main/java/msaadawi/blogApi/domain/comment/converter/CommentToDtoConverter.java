@@ -2,7 +2,7 @@ package msaadawi.blogApi.domain.comment.converter;
 
 import msaadawi.blogApi.domain.comment.model.CommentModel;
 import msaadawi.blogApi.domain.comment.web.payload.ResponseCommentDto;
-import msaadawi.blogApi.commons.util.PageResult;
+import msaadawi.blogApi.common.util.PageResult;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package msaadawi.blogApi.domain.comment.data.entity;
 
 import lombok.*;
-import msaadawi.blogApi.commons.entity.BaseEntity;
+import msaadawi.blogApi.common.entity.BaseEntity;
 import msaadawi.blogApi.domain.post.data.entity.PostEntity;
 import msaadawi.blogApi.domain.user.data.entity.UserEntity;
 
@@ -35,7 +35,7 @@ public class CommentEntity implements BaseEntity<Long> {
 
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private PostEntity postAddedTo;
+    private PostEntity post;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

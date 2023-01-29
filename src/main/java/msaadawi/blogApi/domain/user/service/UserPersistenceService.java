@@ -1,8 +1,8 @@
 package msaadawi.blogApi.domain.user.service;
 
-import msaadawi.blogApi.commons.config.paging.PagingConfiguration;
-import msaadawi.blogApi.commons.util.PageResult;
-import msaadawi.blogApi.commons.config.sorting.SortingConfiguration;
+import msaadawi.blogApi.common.web.paging.PagingSettings;
+import msaadawi.blogApi.common.util.PageResult;
+import msaadawi.blogApi.common.web.sorting.SortingSettings;
 import msaadawi.blogApi.domain.user.model.UserModel;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface UserPersistenceService {
 
     void deleteById(Long id);
 
-    PageResult<UserModel> fetchPage(PagingConfiguration pagingConfig, List<? extends SortingConfiguration> sortingConfigs);
+    PageResult<UserModel> fetchPage(PagingSettings pagingSettings, List<? extends SortingSettings> sortingSettingsList);
 
     List<UserModel> update(List<UserModel> userModels);
 

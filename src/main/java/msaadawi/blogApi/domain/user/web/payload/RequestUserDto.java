@@ -1,22 +1,47 @@
 package msaadawi.blogApi.domain.user.web.payload;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
+import msaadawi.blogApi.domain.user.web.payload.impl.DefaultRequestUserDto;
+
+import java.util.Date;
+
+@JsonDeserialize(as = DefaultRequestUserDto.class)
 public interface RequestUserDto extends UserDto {
 
-    boolean containsId();
+    void setId(Long id) throws NoSuchPropertyException;
 
-    boolean containsUsername();
+    boolean containsId() throws NoSuchPropertyException;
 
-    boolean containsEmail();
+    void setUsername(String username) throws NoSuchPropertyException;
 
-    boolean containsPhone();
+    boolean containsUsername() throws NoSuchPropertyException;
 
-    boolean containsFirstName();
+    void setEmail(String email) throws NoSuchPropertyException;
 
-    boolean containsLastName();
+    boolean containsEmail() throws NoSuchPropertyException;
 
-    boolean containsBirthDate();
+    void setPhone(String phone) throws NoSuchPropertyException;
 
-    boolean containsProfession();
+    boolean containsPhone() throws NoSuchPropertyException;
 
-    boolean containsCurrentLocation();
+    void setFirstName(String firstName) throws NoSuchPropertyException;
+
+    boolean containsFirstName() throws NoSuchPropertyException;
+
+    void setLastName(String lastName) throws NoSuchPropertyException;
+
+    boolean containsLastName() throws NoSuchPropertyException;
+
+    void setBirthDate(Date birthDate) throws NoSuchPropertyException;
+
+    boolean containsBirthDate() throws NoSuchPropertyException;
+
+    void setProfession(String profession) throws NoSuchPropertyException;
+
+    boolean containsProfession() throws NoSuchPropertyException;
+
+    void setCurrentLocation(String currentLocation) throws NoSuchPropertyException;
+
+    boolean containsCurrentLocation() throws NoSuchPropertyException;
 }

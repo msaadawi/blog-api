@@ -1,9 +1,9 @@
 package msaadawi.blogApi.domain.comment.service;
 
 import msaadawi.blogApi.domain.comment.model.CommentModel;
-import msaadawi.blogApi.commons.util.PageResult;
-import msaadawi.blogApi.commons.config.paging.PagingConfiguration;
-import msaadawi.blogApi.commons.config.sorting.SortingConfiguration;
+import msaadawi.blogApi.common.util.PageResult;
+import msaadawi.blogApi.common.web.paging.PagingSettings;
+import msaadawi.blogApi.common.web.sorting.SortingSettings;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public interface CommentPersistenceService {
 
     void deleteById(Long id);
 
-    PageResult<CommentModel> fetchPage(PagingConfiguration pagingConfig, List<? extends SortingConfiguration> sortingConfigs);
+    PageResult<CommentModel> fetchPage(PagingSettings pagingSettings, List<? extends SortingSettings> sortingSettingsList);
 
     List<CommentModel> update(List<CommentModel> commentModels);
 

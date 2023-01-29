@@ -1,6 +1,6 @@
 package msaadawi.blogApi.domain.post.web.payload;
 
-import msaadawi.blogApi.commons.exception.NoSuchPropertyException;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
 import msaadawi.blogApi.domain.user.web.payload.ResponseUserDto;
 
 import java.util.Date;

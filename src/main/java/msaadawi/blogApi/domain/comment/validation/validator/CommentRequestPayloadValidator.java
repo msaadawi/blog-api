@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface CommentRequestPayloadValidator {
 
-    default void validatePayloadForSingleCreate(RequestCommentDto reqCommentDto) throws UnsupportedOperationException {
+    default void validatePayloadForSingleCreateOp(RequestCommentDto reqCommentDto) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Unsupported validation type.");
     }
 
-    default void validatePayloadForSingleUpdate(RequestCommentDto reqCommentDto) throws UnsupportedOperationException {
+    default void validatePayloadForSingleUpdateOp(RequestCommentDto reqCommentDto) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Unsupported validation type.");
     }
 
-    default void validatePayloadForBulkUpdate(List<? extends RequestCommentDto> reqCommentDtos)
+    default void validatePayloadForBulkUpdateOp(List<? extends RequestCommentDto> reqCommentDtos)
             throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Unsupported validation type.");
     }

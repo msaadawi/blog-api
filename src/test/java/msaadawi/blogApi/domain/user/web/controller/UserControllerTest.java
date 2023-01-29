@@ -1,10 +1,10 @@
 package msaadawi.blogApi.domain.user.web.controller;
 
-import msaadawi.blogApi.commons.exception.EntityNotFoundException;
-import msaadawi.blogApi.commons.resolver.PagingConfigResolver;
-import msaadawi.blogApi.commons.resolver.SortingConfigsResolver;
-import msaadawi.blogApi.commons.validation.validator.PagingConfigValidator;
-import msaadawi.blogApi.commons.validation.validator.SortingConfigsValidator;
+import msaadawi.blogApi.common.exception.EntityNotFoundException;
+import msaadawi.blogApi.common.web.paging.PagingSettingsResolver;
+import msaadawi.blogApi.common.web.sorting.SortingSettingsResolver;
+import msaadawi.blogApi.common.validation.validator.PagingSettingsValidator;
+import msaadawi.blogApi.common.validation.validator.SortingSettingsValidator;
 import msaadawi.blogApi.domain.user.converter.DtoToUserConverter;
 import msaadawi.blogApi.domain.user.converter.UserToDtoConverter;
 import msaadawi.blogApi.domain.user.service.UserPersistenceService;
@@ -38,16 +38,16 @@ class UserControllerTest {
     private UserRequestPayloadValidator reqPayloadValidator;
 
     @MockBean
-    private PagingConfigResolver pagingConfigResolver;
+    private PagingSettingsResolver pagingSettingsResolver;
 
     @MockBean
-    private PagingConfigValidator pagingConfigValidator;
+    private PagingSettingsValidator pagingSettingsValidator;
 
     @MockBean
-    private SortingConfigsResolver sortingConfigsResolver;
+    private SortingSettingsResolver sortingSettingsResolver;
 
     @MockBean
-    private SortingConfigsValidator sortingConfigsValidator;
+    private SortingSettingsValidator sortingSettingsValidator;
 
     @Test
     void should_Return404NotFound_For_GetUser_When_UserDoesNotExist() throws Exception {

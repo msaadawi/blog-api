@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
+import msaadawi.blogApi.common.validation.Validatable;
+import msaadawi.blogApi.common.validation.group.OnBulkUpdate;
+import msaadawi.blogApi.common.validation.group.OnSingleInsert;
+import msaadawi.blogApi.common.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.comment.validation.group.OnReferencedByComment;
-import msaadawi.blogApi.commons.error.ValidatedBean;
-import msaadawi.blogApi.commons.exception.NoSuchPropertyException;
-import msaadawi.blogApi.commons.validation.group.OnBulkUpdate;
-import msaadawi.blogApi.commons.validation.group.OnSingleInsert;
-import msaadawi.blogApi.commons.validation.group.OnSingleUpdate;
-import msaadawi.blogApi.domain.user.web.payload.impl.DefaultRequestUserDto;
 import msaadawi.blogApi.domain.post.web.payload.RequestPostDto;
 import msaadawi.blogApi.domain.user.web.payload.RequestUserDto;
 
@@ -28,9 +27,10 @@ import java.util.Optional;
 @Builder
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE)
+        setterVisibility = JsonAutoDetect.Visibility.NONE,
+        creatorVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
+public class DefaultRequestPostDto implements RequestPostDto, Validatable {
 
     @Null(message = "{validation.post.id.on-single-insert-or-update.if-present}",
             groups = {OnSingleInsert.class, OnSingleUpdate.class})
@@ -80,7 +80,7 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
     @Null(message = "{validation.comment.post.owner.on-referenced.if-present}",
             groups = OnReferencedByComment.class)
     private Optional<@NotNull(message = "{validation.post.owner.on-single-insert.if-present}",
-            groups = {OnSingleInsert.class}) DefaultRequestUserDto> owner;
+            groups = {OnSingleInsert.class}) RequestUserDto> owner;
 
     @Override
     public String getPayloadName() {
@@ -93,12 +93,13 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
         return id.orElse(0L);
     }
 
+    @Override
     public void setId(Long id) throws NoSuchPropertyException {
         this.id = Optional.ofNullable(id);
     }
 
     @Override
-    public boolean containsId() {
+    public boolean containsId() throws NoSuchPropertyException {
         return id != null;
     }
 
@@ -109,7 +110,12 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsTitle() {
+    public void setTitle(String title) throws NoSuchPropertyException {
+        this.title = Optional.ofNullable(title);
+    }
+
+    @Override
+    public boolean containsTitle() throws NoSuchPropertyException {
         return title != null;
     }
 
@@ -120,7 +126,12 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsContent() {
+    public void setContent(String content) throws NoSuchPropertyException {
+        this.content = Optional.ofNullable(content);
+    }
+
+    @Override
+    public boolean containsContent() throws NoSuchPropertyException {
         return content != null;
     }
 
@@ -131,7 +142,12 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsCreatedAt() {
+    public void setCreatedAt(Date createdAt) throws NoSuchPropertyException {
+        this.createdAt = Optional.ofNullable(createdAt);
+    }
+
+    @Override
+    public boolean containsCreatedAt() throws NoSuchPropertyException {
         return createdAt != null;
     }
 
@@ -142,7 +158,12 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsLastUpdatedAt() {
+    public void setLastUpdatedAt(Date lastUpdatedAt) throws NoSuchPropertyException {
+        this.lastUpdatedAt = Optional.ofNullable(lastUpdatedAt);
+    }
+
+    @Override
+    public boolean containsLastUpdatedAt() throws NoSuchPropertyException {
         return lastUpdatedAt != null;
     }
 
@@ -153,7 +174,12 @@ public class DefaultRequestPostDto implements RequestPostDto, ValidatedBean {
     }
 
     @Override
-    public boolean containsOwner() {
+    public void setOwner(RequestUserDto owner) throws NoSuchPropertyException {
+        this.owner = Optional.ofNullable(owner);
+    }
+
+    @Override
+    public boolean containsOwner() throws NoSuchPropertyException {
         return owner != null;
     }
 

@@ -7,12 +7,12 @@ import msaadawi.blogApi.domain.comment.data.entity.CommentEntity;
 import msaadawi.blogApi.domain.comment.data.repository.CommentRepository;
 import msaadawi.blogApi.domain.comment.model.CommentModel;
 import msaadawi.blogApi.domain.comment.service.CommentPersistenceService;
-import msaadawi.blogApi.commons.config.paging.PagingConfiguration;
-import msaadawi.blogApi.commons.config.paging.PagingConfigurer;
-import msaadawi.blogApi.commons.config.sorting.SortingConfiguration;
-import msaadawi.blogApi.commons.config.sorting.SortingConfigurer;
-import msaadawi.blogApi.commons.exception.EntityNotFoundException;
-import msaadawi.blogApi.commons.util.PageResult;
+import msaadawi.blogApi.common.web.paging.PagingSettings;
+import msaadawi.blogApi.common.web.paging.PagingConfigurer;
+import msaadawi.blogApi.common.web.sorting.SortingSettings;
+import msaadawi.blogApi.common.web.sorting.SortingConfigurer;
+import msaadawi.blogApi.common.exception.EntityNotFoundException;
+import msaadawi.blogApi.common.util.PageResult;
 import msaadawi.blogApi.domain.post.service.PostPersistenceService;
 import msaadawi.blogApi.domain.user.service.UserPersistenceService;
 import org.springframework.data.domain.PageRequest;
@@ -97,11 +97,11 @@ public class DefaultCommentPersistenceService implements CommentPersistenceServi
     }
 
     @Override
-    public PageResult<CommentModel> fetchPage(PagingConfiguration pagingConfig, List<? extends SortingConfiguration> sortingConfigs) {
+    public PageResult<CommentModel> fetchPage(PagingSettings pagingSettings, List<? extends SortingSettings> sortingSettingsList) {
         Pageable pageable = PageRequest.of(
-                pagingConfigurer.configurePageNumber(pagingConfig),
-                pagingConfigurer.configurePageSize(pagingConfig),
-                sortingConfigurer.doConfigure(sortingConfigs)
+                pagingConfigurer.configurePageNumber(pagingSettings),
+                pagingConfigurer.configurePageSize(pagingSettings),
+                sortingConfigurer.doConfigure(sortingSettingsList)
         );
 
         org.springframework.data.domain.Page<CommentEntity> page = commentRepository.findAll(pageable);
@@ -143,9 +143,9 @@ public class DefaultCommentPersistenceService implements CommentPersistenceServi
     }
 
     private void verifyCommentPostBeforeCreate(CommentModel comment) {
-        if (comment.getPostAddedTo() == null)
+        if (comment.getPost() == null)
             throw new IllegalArgumentException("Comment cannot be assigned to a null post");
-        Long postId = comment.getPostAddedTo().getId();
+        Long postId = comment.getPost().getId();
         if (postId == null)
             throw new IllegalArgumentException("Post the comment is to be assigned to has null id");
         if (!postPersistenceService.existsById(postId))

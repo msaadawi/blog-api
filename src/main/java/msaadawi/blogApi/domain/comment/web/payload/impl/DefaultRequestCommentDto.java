@@ -5,15 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import msaadawi.blogApi.common.exception.NoSuchPropertyException;
+import msaadawi.blogApi.common.validation.Validatable;
+import msaadawi.blogApi.common.validation.group.OnBulkUpdate;
+import msaadawi.blogApi.common.validation.group.OnSingleInsert;
+import msaadawi.blogApi.common.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.comment.web.payload.RequestCommentDto;
-import msaadawi.blogApi.commons.error.ValidatedBean;
-import msaadawi.blogApi.commons.exception.NoSuchPropertyException;
-import msaadawi.blogApi.commons.validation.group.OnBulkUpdate;
-import msaadawi.blogApi.commons.validation.group.OnSingleInsert;
-import msaadawi.blogApi.commons.validation.group.OnSingleUpdate;
 import msaadawi.blogApi.domain.post.web.payload.RequestPostDto;
-import msaadawi.blogApi.domain.post.web.payload.impl.DefaultRequestPostDto;
-import msaadawi.blogApi.domain.user.web.payload.impl.DefaultRequestUserDto;
 import msaadawi.blogApi.domain.user.web.payload.RequestUserDto;
 
 import javax.validation.constraints.NotBlank;
@@ -28,9 +26,10 @@ import java.util.Optional;
 @Builder
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,
         getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE)
+        setterVisibility = JsonAutoDetect.Visibility.NONE,
+        creatorVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBean {
+public class DefaultRequestCommentDto implements RequestCommentDto, Validatable {
 
     @Null(message = "{validation.comment.id.on-single-insert-or-update.if-present}",
             groups = {OnSingleInsert.class, OnSingleUpdate.class})
@@ -61,14 +60,14 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
     @Null(message = "{validation.comment.post.on-single-or-bulk-update.if-present}",
             groups = {OnSingleUpdate.class, OnBulkUpdate.class})
     private Optional<@NotNull(message = "{validation.comment.post.on-single-insert.if-present}",
-            groups = {OnSingleInsert.class}) DefaultRequestPostDto> postAddedTo;
+            groups = {OnSingleInsert.class}) RequestPostDto> post;
 
     @NotNull(message = "{validation.comment.owner.on-single-insert.if-absent}",
             groups = {OnSingleInsert.class})
     @Null(message = "{validation.comment.owner.on-single-or-bulk-update.if-present}",
             groups = {OnSingleUpdate.class, OnBulkUpdate.class})
     private Optional<@NotNull(message = "{validation.comment.owner.on-single-insert.if-present}",
-            groups = {OnSingleInsert.class}) DefaultRequestUserDto> owner;
+            groups = {OnSingleInsert.class}) RequestUserDto> owner;
 
     @Override
     public String getPayloadName() {
@@ -86,7 +85,7 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
     }
 
     @Override
-    public boolean containsId() {
+    public boolean containsId() throws NoSuchPropertyException {
         return id != null;
     }
 
@@ -97,7 +96,12 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
     }
 
     @Override
-    public boolean containsContent() throws NoSuchPropertyException, UnsupportedOperationException {
+    public void setContent(String content) throws NoSuchPropertyException {
+        this.content = Optional.ofNullable(content);
+    }
+
+    @Override
+    public boolean containsContent() throws NoSuchPropertyException {
         return content != null;
     }
 
@@ -108,7 +112,12 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
     }
 
     @Override
-    public boolean containsCreatedAt() throws NoSuchPropertyException, UnsupportedOperationException {
+    public void setCreatedAt(Date createdAt) throws NoSuchPropertyException {
+        this.createdAt = Optional.ofNullable(createdAt);
+    }
+
+    @Override
+    public boolean containsCreatedAt() throws NoSuchPropertyException {
         return createdAt != null;
     }
 
@@ -119,19 +128,29 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
     }
 
     @Override
-    public boolean containsLastUpdatedAt() throws NoSuchPropertyException, UnsupportedOperationException {
+    public void setLastUpdatedAt(Date lastUpdatedAt) throws NoSuchPropertyException {
+        this.lastUpdatedAt = Optional.ofNullable(lastUpdatedAt);
+    }
+
+    @Override
+    public boolean containsLastUpdatedAt() throws NoSuchPropertyException {
         return lastUpdatedAt != null;
     }
 
     @Override
-    public RequestPostDto getPostAddedTo() throws NoSuchPropertyException {
-        if (postAddedTo == null) return null;
-        return postAddedTo.orElse(null);
+    public RequestPostDto getPost() throws NoSuchPropertyException {
+        if (post == null) return null;
+        return post.orElse(null);
     }
 
     @Override
-    public boolean containsPostAddedTo() throws NoSuchPropertyException, UnsupportedOperationException {
-        return postAddedTo != null;
+    public void setPost(RequestPostDto post) throws NoSuchPropertyException {
+        this.post = Optional.ofNullable(post);
+    }
+
+    @Override
+    public boolean containsPost() throws NoSuchPropertyException {
+        return post != null;
     }
 
     @Override
@@ -141,7 +160,12 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
     }
 
     @Override
-    public boolean containsOwner() throws NoSuchPropertyException, UnsupportedOperationException {
+    public void setOwner(RequestUserDto owner) throws NoSuchPropertyException {
+        this.owner = Optional.ofNullable(owner);
+    }
+
+    @Override
+    public boolean containsOwner() throws NoSuchPropertyException {
         return owner != null;
     }
 
@@ -157,7 +181,7 @@ public class DefaultRequestCommentDto implements RequestCommentDto, ValidatedBea
         if (fieldName.equals("content")) return content;
         if (fieldName.equals("createdAt")) return createdAt;
         if (fieldName.equals("lastUpdatedAt")) return lastUpdatedAt;
-        if (fieldName.equals("postAddedTo")) return postAddedTo;
+        if (fieldName.equals("post")) return post;
         if (fieldName.equals("owner")) return owner;
         throw new NoSuchPropertyException("there is no field with name "
                 + fieldName + " in " + getClass().getName());

@@ -34,7 +34,7 @@ public class DefaultDtoToUserConverter implements DtoToUserConverter {
     public UserModel toUpdatableUser(RequestUserDto source) {
         if (source == null) return null;
         if (source.getId() == null)
-            throw new IllegalArgumentException("Bad source. Id is null.");
+            throw new IllegalArgumentException("Bad source, Id is null.");
         UserModel transientUser = new DefaultUserModel();
         UserModel persistedUser = userPersistenceService.getById(source.getId());
         merge(source, transientUser, persistedUser);

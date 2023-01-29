@@ -25,7 +25,7 @@ public class DefaultResponseCommentDto implements ResponseCommentDto {
 
     private Date lastUpdatedAt;
 
-    private ResponsePostDto postAddedTo;
+    private ResponsePostDto post;
 
     private ResponseUserDto owner;
 

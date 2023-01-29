@@ -1,21 +1,20 @@
 package msaadawi.blogApi.domain.comment.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import msaadawi.blogApi.common.util.PageResult;
+import msaadawi.blogApi.common.validation.validator.PagingSettingsValidator;
+import msaadawi.blogApi.common.validation.validator.SortingSettingsValidator;
+import msaadawi.blogApi.common.web.paging.PagingSettings;
+import msaadawi.blogApi.common.web.paging.PagingSettingsResolver;
+import msaadawi.blogApi.common.web.sorting.SortingSettings;
+import msaadawi.blogApi.common.web.sorting.SortingSettingsResolver;
 import msaadawi.blogApi.domain.comment.converter.CommentToDtoConverter;
 import msaadawi.blogApi.domain.comment.converter.DtoToCommentConverter;
 import msaadawi.blogApi.domain.comment.model.CommentModel;
 import msaadawi.blogApi.domain.comment.service.CommentPersistenceService;
 import msaadawi.blogApi.domain.comment.validation.validator.CommentRequestPayloadValidator;
+import msaadawi.blogApi.domain.comment.web.payload.RequestCommentDto;
 import msaadawi.blogApi.domain.comment.web.payload.ResponseCommentDto;
-import msaadawi.blogApi.domain.comment.web.payload.impl.DefaultRequestCommentDto;
-import msaadawi.blogApi.commons.config.paging.PagingConfiguration;
-import msaadawi.blogApi.commons.config.sorting.SortingConfiguration;
-import msaadawi.blogApi.commons.controller.BaseController;
-import msaadawi.blogApi.commons.resolver.PagingConfigResolver;
-import msaadawi.blogApi.commons.resolver.SortingConfigsResolver;
-import msaadawi.blogApi.commons.util.PageResult;
-import msaadawi.blogApi.commons.validation.validator.PagingConfigValidator;
-import msaadawi.blogApi.commons.validation.validator.SortingConfigsValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/comments")
 @RequiredArgsConstructor
-public class CommentController implements BaseController {
+public class CommentController {
 
     private final CommentPersistenceService commentPersistenceService;
 
@@ -36,13 +35,13 @@ public class CommentController implements BaseController {
 
     private final CommentRequestPayloadValidator reqPayloadValidator;
 
-    private final PagingConfigResolver pagingConfigResolver;
+    private final PagingSettingsResolver pagingSettingsResolver;
 
-    private final PagingConfigValidator pagingConfigValidator;
+    private final PagingSettingsValidator pagingSettingsValidator;
 
-    private final SortingConfigsResolver sortingConfigsResolver;
+    private final SortingSettingsResolver sortingSettingsResolver;
 
-    private final SortingConfigsValidator sortingConfigsValidator;
+    private final SortingSettingsValidator sortingSettingsValidator;
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseCommentDto> getComment(@PathVariable("id") long id) {
@@ -51,15 +50,15 @@ public class CommentController implements BaseController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createComment(@RequestBody DefaultRequestCommentDto reqCommentDto) {
-        reqPayloadValidator.validatePayloadForSingleCreate(reqCommentDto);
+    public ResponseEntity<Void> createComment(@RequestBody RequestCommentDto reqCommentDto) {
+        reqPayloadValidator.validatePayloadForSingleCreateOp(reqCommentDto);
         commentPersistenceService.create(dtoToCommentConverter.toComment(reqCommentDto));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateComment(@RequestBody DefaultRequestCommentDto reqCommentDto, @PathVariable("id") long id) {
-        reqPayloadValidator.validatePayloadForSingleUpdate(reqCommentDto);
+    public ResponseEntity<Void> updateComment(@RequestBody RequestCommentDto reqCommentDto, @PathVariable("id") long id) {
+        reqPayloadValidator.validatePayloadForSingleUpdateOp(reqCommentDto);
         reqCommentDto.setId(id);
         CommentModel updatableComment = dtoToCommentConverter.toUpdatableComment(reqCommentDto);
         commentPersistenceService.update(updatableComment);
@@ -77,17 +76,17 @@ public class CommentController implements BaseController {
             @RequestParam(name = "pageNumber", required = false) Integer pageNumber,
             @RequestParam(name = "pageSize", required = false) Integer pageSize,
             @RequestParam(name = "sort", required = false) String[] sort) {
-        PagingConfiguration pagingConfig = pagingConfigResolver.doResolve(pageNumber, pageSize);
-        pagingConfigValidator.doValidate(pagingConfig);
-        List<SortingConfiguration> sortingConfigs = sortingConfigsResolver.doResolve(sort);
-        sortingConfigsValidator.doValidate(sortingConfigs);
-        PageResult<CommentModel> commentPageResult = commentPersistenceService.fetchPage(pagingConfig, sortingConfigs);
+        PagingSettings pagingSettings = pagingSettingsResolver.doResolve(pageNumber, pageSize);
+        pagingSettingsValidator.doValidate(pagingSettings);
+        List<SortingSettings> sortingSettingsList = sortingSettingsResolver.doResolve(sort);
+        sortingSettingsValidator.doValidate(sortingSettingsList);
+        PageResult<CommentModel> commentPageResult = commentPersistenceService.fetchPage(pagingSettings, sortingSettingsList);
         return new ResponseEntity<>(commentToDtoConverter.toCommentDtoPageResult(commentPageResult), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateComments(@RequestBody List<DefaultRequestCommentDto> reqCommentDtos) {
-        reqPayloadValidator.validatePayloadForBulkUpdate(reqCommentDtos);
+    public ResponseEntity<Void> updateComments(@RequestBody List<RequestCommentDto> reqCommentDtos) {
+        reqPayloadValidator.validatePayloadForBulkUpdateOp(reqCommentDtos);
         List<CommentModel> updatableComments = dtoToCommentConverter.toUpdatableCommentList(reqCommentDtos);
         commentPersistenceService.update(updatableComments);
         return ResponseEntity.ok().build();
@@ -98,5 +97,4 @@ public class CommentController implements BaseController {
         commentPersistenceService.deleteAll();
         return ResponseEntity.ok().build();
     }
-
 }

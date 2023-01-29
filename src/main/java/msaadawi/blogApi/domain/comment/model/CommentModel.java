@@ -1,12 +1,11 @@
 package msaadawi.blogApi.domain.comment.model;
 
-import msaadawi.blogApi.commons.model.BaseModel;
-import msaadawi.blogApi.domain.user.model.UserModel;
 import msaadawi.blogApi.domain.post.model.PostModel;
+import msaadawi.blogApi.domain.user.model.UserModel;
 
 import java.util.Date;
 
-public interface CommentModel extends BaseModel {
+public interface CommentModel {
 
     Long getId();
 
@@ -24,9 +23,9 @@ public interface CommentModel extends BaseModel {
 
     void setLastUpdatedAt(Date lastUpdatedAt);
 
-    PostModel getPostAddedTo();
+    PostModel getPost();
 
-    void setPostAddedTo(PostModel post);
+    void setPost(PostModel post);
 
     UserModel getOwner();
 
